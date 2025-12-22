@@ -67,7 +67,7 @@ async function sendFrame(){
         const res = await fetch("https://your-app.up.railway.app/eye-tracking/", {method:"POST",body:form});
         const data = await res.json(); 
         if(data.x && data.y){
-            const img = document.createElement("img");
+            const img = document.createElement("jpg");
             img.src="photo1.jpg";
             img.style.position="absolute";
             img.style.width="50px";
