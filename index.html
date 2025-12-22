@@ -8,11 +8,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap');
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -63,10 +59,7 @@
       margin: 12px 0;
     }
 
-    .subtitle {
-      color: #666;
-      margin-bottom: 20px;
-    }
+    .subtitle { color: #666; margin-bottom: 20px; }
 
     .message {
       font-size: 0.95rem;
@@ -90,7 +83,6 @@
 
     button:hover {
       transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 15px 35px rgba(255,77,109,0.6);
     }
 
     /* Floating hearts */
@@ -106,7 +98,7 @@
       to { transform: translateY(-120vh) scale(1.8); opacity: 0; }
     }
 
-    /* Image popup */
+    /* Image modal */
     .modal {
       position: fixed;
       inset: 0;
@@ -121,13 +113,6 @@
       max-width: 90%;
       max-height: 80%;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      animation: zoomIn 0.4s ease;
-    }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.7); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
 
     .close {
@@ -138,43 +123,81 @@
       color: white;
       cursor: pointer;
     }
+
+    /* Music overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .overlay h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+    }
+
+    .overlay p { margin-top: 10px; opacity: 0.9; }
   </style>
 </head>
 
 <body>
 
+  <!-- Music -->
+  <audio id="bgm" loop>
+    <source src="music/love.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Tap to start -->
+  <div class="overlay" onclick="startExperience()">
+    <div>
+      <h2>Tap to Begin 💖</h2>
+      <p>Our story starts with music</p>
+    </div>
+  </div>
+
   <div class="card">
     <h1>Happy Anniversary ❤️</h1>
     <div class="years">4 Years</div>
-    <div class="subtitle">Since our first “hello”</div>
+    <div class="subtitle">Still choosing you</div>
 
     <div class="message">
-      Four years, countless memories, and a love that keeps growing.
-      Thank you for choosing me every day.  
-      This little page is just a tiny reflection of how special you are to me.
+      Four years of love, laughter, and unforgettable memories.
+      If love had a sound, this song would be it.
     </div>
 
     <button onclick="showLove()">💖 Shower Love</button>
     <button onclick="openImage()">📸 Our Memory</button>
   </div>
 
-  <!-- Image Modal -->
+  <!-- Image popup -->
   <div class="modal" id="modal">
     <span class="close" onclick="closeImage()">✕</span>
-    <img src="images/photo1.jpg" alt="Our Memory">
+    <img src="images/photo1.jpg">
   </div>
 
   <script>
+    function startExperience() {
+      const audio = document.getElementById('bgm');
+      audio.play();
+      document.querySelector('.overlay').style.display = 'none';
+    }
+
     function showLove() {
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 18; i++) {
         const heart = document.createElement('div');
         heart.className = 'heart';
         heart.innerHTML = '❤️';
         heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = (16 + Math.random() * 30) + 'px';
+        heart.style.fontSize = (16 + Math.random() * 28) + 'px';
         heart.style.animationDuration = (5 + Math.random() * 3) + 's';
         document.body.appendChild(heart);
-
         setTimeout(() => heart.remove(), 8000);
       }
     }
