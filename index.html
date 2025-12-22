@@ -62,7 +62,7 @@ async function sendFrame(){
     const base64 = captureFrame();
     const blob = await (await fetch(base64)).blob();
     const form = new FormData();
-    form.append("file", blob,"frame.jpg");
+    form.append("file", blob,"photo1.jpg");
     try{
         const res = await fetch("https://your-app.up.railway.app/eye-tracking/", {method:"POST",body:form});
         const data = await res.json();
