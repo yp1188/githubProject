@@ -2,54 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4 Years of Love ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4 Years of Us ❤️</title>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap');
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
-      height: 100vh;
+      min-height: 100vh;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      overflow: hidden;
+      background: linear-gradient(-45deg, #ff758c, #ff7eb3, #fad0c4, #ffd1ff);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 24px;
-      padding: 40px 30px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 40px 32px;
+      width: 90%;
       max-width: 420px;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      animation: fadeIn 1.8s ease;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+      animation: fadeUp 1.5s ease;
+      z-index: 2;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
       color: #d6336c;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
     }
 
     .years {
-      font-size: 3.5rem;
+      font-size: 3.8rem;
       font-weight: 700;
       color: #ff4d6d;
-      margin: 10px 0;
+      margin: 12px 0;
     }
 
     .subtitle {
-      font-size: 1rem;
       color: #666;
       margin-bottom: 20px;
     }
@@ -58,83 +72,120 @@
       font-size: 0.95rem;
       color: #444;
       line-height: 1.7;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
-    .signature {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: #d6336c;
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff4d6d, #ff85a1);
+      color: white;
+      box-shadow: 0 10px 25px rgba(255,77,109,0.4);
+      transition: all 0.3s ease;
+      margin: 6px;
+    }
+
+    button:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(255,77,109,0.6);
     }
 
     /* Floating hearts */
     .heart {
       position: absolute;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 20px;
-      animation: floatUp 8s linear infinite;
+      color: rgba(255,255,255,0.9);
+      animation: floatUp linear forwards;
+      pointer-events: none;
     }
 
     @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.8);
-        opacity: 0;
-      }
+      from { transform: translateY(0) scale(1); opacity: 1; }
+      to { transform: translateY(-120vh) scale(1.8); opacity: 0; }
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* Image popup */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: zoomIn 0.4s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
 
   <div class="card">
     <h1>Happy Anniversary ❤️</h1>
     <div class="years">4 Years</div>
-    <div class="subtitle">and still counting…</div>
+    <div class="subtitle">Since our first “hello”</div>
 
     <div class="message">
-      Four years ago, we started a journey that changed my life forever.  
-      Thank you for every smile, every laugh, every moment of love.  
-      No matter where life takes us, my heart will always find its way back to you.
+      Four years, countless memories, and a love that keeps growing.
+      Thank you for choosing me every day.  
+      This little page is just a tiny reflection of how special you are to me.
     </div>
 
-    <div class="signature">
-      Forever yours,<br/>
-      ❤️
-    </div>
+    <button onclick="showLove()">💖 Shower Love</button>
+    <button onclick="openImage()">📸 Our Memory</button>
   </div>
 
-  <!-- Hearts -->
+  <!-- Image Modal -->
+  <div class="modal" id="modal">
+    <span class="close" onclick="closeImage()">✕</span>
+    <img src="images/photo1.jpg" alt="Our Memory">
+  </div>
+
   <script>
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.innerHTML = '❤️';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = (16 + Math.random() * 24) + 'px';
-      heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+    function showLove() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (16 + Math.random() * 30) + 'px';
+        heart.style.animationDuration = (5 + Math.random() * 3) + 's';
+        document.body.appendChild(heart);
 
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 10000);
+        setTimeout(() => heart.remove(), 8000);
+      }
     }
 
-    setInterval(createHeart, 500);
+    function openImage() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeImage() {
+      document.getElementById('modal').style.display = 'none';
+    }
   </script>
 
 </body>
