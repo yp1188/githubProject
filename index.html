@@ -1,216 +1,201 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>我们的纪念日 ❤️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<title>我们的四周年 ❤️</title>
 
-<!-- 浪漫中文字体 -->
-<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<!-- 中文浪漫字体 -->
+<link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    background:linear-gradient(180deg,#1a001f,#000);
-    overflow:hidden;
-    color:white;
-    font-family:'ZCOOL XiaoWei',serif;
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  width:100vw; height:100vh;
+  background: linear-gradient(180deg,#1a002b,#000);
+  overflow:hidden;
+  font-family: "Ma Shan Zheng", cursive;
+  color:white;
 }
 
-/* 手机锁屏比例 */
-#app{
-    width:100vw;
-    height:100vh;
-    position:relative;
+/* 居中容器（手机锁屏比例） */
+#app {
+  width:100%;
+  height:100%;
+  position:relative;
 }
 
-/* 背景渐变动画 */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at top,#ff5fa2,#000);
-    opacity:.25;
-    animation:bgmove 10s infinite alternate;
+/* 背景星光 */
+.star {
+  position:absolute;
+  width:2px; height:2px;
+  background:white;
+  opacity:.6;
+  animation: twinkle 3s infinite;
 }
-@keyframes bgmove{
-    from{transform:scale(1)}
-    to{transform:scale(1.2)}
-}
-
-/* 点击开始 */
-#startHint{
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1.6rem;
-    font-family:'Ma Shan Zheng',cursive;
-    animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-    0%,100%{opacity:1}
-    50%{opacity:.5}
+@keyframes twinkle {
+  0%,100%{opacity:.2}
+  50%{opacity:1}
 }
 
-/* 名字 */
-#names{
-    text-align:center;
-    margin-top:40px;
-    font-size:2rem;
-    font-family:'Ma Shan Zheng',cursive;
+/* 爱心文字 */
+.love {
+  position:absolute;
+  font-size:2.2rem;
+  color:#ff9ecf;
+  animation: pop 2s ease forwards;
+}
+@keyframes pop {
+  0%{transform:scale(0);opacity:0}
+  50%{transform:scale(1.2);opacity:1}
+  100%{transform:scale(1);opacity:0}
+}
+
+/* 情话 */
+#quote {
+  position:absolute;
+  bottom:20%;
+  width:100%;
+  text-align:center;
+  font-size:1.4rem;
+  padding:0 20px;
+  animation: fade 4s infinite;
+}
+@keyframes fade {
+  0%{opacity:0}
+  20%{opacity:1}
+  80%{opacity:1}
+  100%{opacity:0}
 }
 
 /* 倒计时 */
-#days{
-    text-align:center;
-    margin-top:10px;
-    font-size:1.2rem;
-    opacity:.9;
+#days {
+  position:absolute;
+  top:8%;
+  width:100%;
+  text-align:center;
+  font-size:1.2rem;
+  opacity:.9;
 }
 
-/* 情话轮播 */
-#quote{
-    position:absolute;
-    bottom:22%;
-    width:100%;
-    text-align:center;
-    font-size:1.4rem;
-    padding:0 20px;
-    animation:fade 3s infinite;
-}
-@keyframes fade{
-    0%,100%{opacity:0}
-    20%,80%{opacity:1}
+/* 彩蛋爱心按钮 */
+#egg {
+  position:absolute;
+  bottom:8%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:2.5rem;
+  cursor:pointer;
 }
 
-/* 漂浮爱心 */
-.heart{
-    position:absolute;
-    color:#ff6fae;
-    animation:float 6s linear forwards;
-}
-@keyframes float{
-    from{transform:translateY(100vh) scale(1);opacity:1}
-    to{transform:translateY(-10vh) scale(.5);opacity:0}
-}
-
-/* 点击彩蛋 */
-#egg{
-    position:absolute;
-    bottom:12%;
-    width:100%;
-    text-align:center;
-    font-size:2rem;
-    cursor:pointer;
-    animation:heartbeat 1.2s infinite;
-}
-@keyframes heartbeat{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.15)}
-}
-
-/* 结尾页 */
-#final{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    font-size:2.5rem;
-    font-family:'Ma Shan Zheng',cursive;
+/* 全屏烟花 */
+canvas {
+  position:absolute;
+  top:0; left:0;
+  pointer-events:none;
 }
 </style>
 </head>
 
 <body>
+
 <div id="app">
+  <div id="days"></div>
+  <div id="quote"></div>
+  <div id="egg">❤️</div>
+  <canvas id="fireworks"></canvas>
+</div>
 
 <audio id="bgm" loop>
-    <source src="./music/love.mp3" type="audio/mpeg">
+  <source src="music/love.mp3" type="audio/mpeg">
 </audio>
 
-<div id="startHint">💖 轻触开始我们的故事 💖</div>
-
-<div id="names">Yan ❤️ Pin</div>
-<div id="days"></div>
-
-<div id="quote"></div>
-
-<div id="egg">❤️</div>
-
-<div id="final">
-    <div>我爱你</div>
-    <div style="font-size:1.2rem;margin-top:10px;">直到时间的尽头</div>
-</div>
-
-</div>
-
 <script>
-// ===== 点击开始 =====
-const bgm=document.getElementById("bgm");
+/* ===== 启动音乐（手机必须点击） ===== */
 document.body.addEventListener("click",()=>{
-    bgm.play();
-    startHint.style.display="none";
+  document.getElementById("bgm").play();
 },{once:true});
 
-// ===== 在一起天数 =====
-const startDate=new Date("2021-08-01"); // 改成你们的日期
-function updateDays(){
-    const now=new Date();
-    const days=Math.floor((now-startDate)/86400000);
-    document.getElementById("days").innerText=`我们在一起 ${days} 天`;
+/* ===== 星光背景 ===== */
+for(let i=0;i<80;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
 }
-updateDays();
 
-// ===== 情话轮播 =====
+/* ===== 在一起天数 ===== */
+const startDate = new Date("2023-01-01");
+const today = new Date();
+const days = Math.floor((today-startDate)/(1000*60*60*24));
+document.getElementById("days").innerText =
+`我们在一起已经 ${days} 天了 ❤️`;
+
+/* ===== 情话轮播 ===== */
 const quotes=[
-"遇见你，是我一生的幸运",
-"你是我所有温柔的来源",
-"这一生，只想牵着你的手",
-"爱不是选择，是你"
+"遇见你，是我这一生最幸运的事",
+"时间会走远，爱你不会",
+"你在，我就在",
+"四年了，我还是一样爱你",
+"未来很长，我想一直牵着你"
 ];
 let qi=0;
 setInterval(()=>{
-    quote.innerText=quotes[qi];
-    qi=(qi+1)%quotes.length;
-},3000);
+  document.getElementById("quote").innerText=quotes[qi];
+  qi=(qi+1)%quotes.length;
+},4000);
 
-// ===== 漂浮爱心 =====
+/* ===== LOVE 自动弹出 ===== */
 setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerText="❤️";
-    h.style.left=Math.random()*100+"vw";
-    h.style.fontSize=20+Math.random()*20+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),6000);
-},500);
+  const d=document.createElement("div");
+  d.className="love";
+  d.innerText="❤️ LOVE ❤️";
+  d.style.left=Math.random()*80+"vw";
+  d.style.top=Math.random()*70+"vh";
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),2000);
+},2500);
 
-// ===== 彩蛋 & 结尾 =====
+/* ===== 彩蛋 ===== */
 document.getElementById("egg").onclick=()=>{
-    document.getElementById("final").style.display="flex";
-    launchFireworks();
+  alert("这辈子，只爱你一个 ❤️");
+  launchFireworks();
 };
 
-// ===== 简易烟花 =====
+/* ===== Canvas 真烟花 ===== */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
 function launchFireworks(){
-    setInterval(()=>{
-        const f=document.createElement("div");
-        f.innerText="✨";
-        f.style.position="fixed";
-        f.style.left=Math.random()*100+"vw";
-        f.style.top=Math.random()*100+"vh";
-        f.style.fontSize="2rem";
-        document.body.appendChild(f);
-        setTimeout(()=>f.remove(),1000);
-    },200);
+  for(let i=0;i<150;i++){
+    particles.push({
+      x:canvas.width/2,
+      y:canvas.height/2,
+      vx:(Math.random()-0.5)*6,
+      vy:(Math.random()-0.5)*6,
+      life:60
+    });
+  }
 }
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life--;
+    ctx.fillStyle="rgba(255,150,200,.8)";
+    ctx.fillRect(p.x,p.y,2,2);
+    if(p.life<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
+
 </body>
 </html>
