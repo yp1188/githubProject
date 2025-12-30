@@ -1,104 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>4-Year Anniversary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>我们的四周年 ❤️</title>
+
 <style>
-    body { margin:0; overflow:hidden; background:#111; color:white; font-family:sans-serif; }
-    .love { position:absolute; color:pink; font-size:3rem; transition: transform 0.5s ease; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: "PingFang SC","Microsoft YaHei",sans-serif;
+    height:100vh;
+    background: linear-gradient(180deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    overflow:hidden;
+}
+
+/* 页面容器 */
+.page {
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+.page.active { display:flex; }
+
+/* 爱心动画 */
+.heart {
+    position:absolute;
+    color:pink;
+    font-size:20px;
+    animation: floatUp 3s linear forwards;
+}
+@keyframes floatUp {
+    from { transform:translateY(0); opacity:1; }
+    to { transform:translateY(-200px); opacity:0; }
+}
+
+/* 按钮 */
+.btn {
+    margin-top:30px;
+    padding:12px 30px;
+    border-radius:30px;
+    background:pink;
+    color:#222;
+    font-size:1.1rem;
+}
+
+/* 情话 */
+.quote {
+    font-size:1.4rem;
+    line-height:2.2rem;
+    animation: fade 2s;
+}
+
+/* 时间轴 */
+.timeline {
+    width:100%;
+    text-align:left;
+}
+.timeline p {
+    margin:15px 0;
+    padding-left:10px;
+    border-left:3px solid pink;
+}
+
+/* 烟花 */
+canvas {
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
 </style>
 </head>
+
 <body>
 
-<audio id="bgm" autoplay loop>
-  <source src="./music/love.mp3" type="audio/mpeg">
+<!-- 🎵 背景音乐 -->
+<audio id="bgm" loop>
+    <source src="./music/love.mp3" type="audio/mpeg">
 </audio>
 
-<div id="startHint"
-     style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-     font-size:1.5rem;color:white;cursor:pointer;">
-  💖 Tap / Click to Start 💖
+<!-- PAGE 1 封面 -->
+<div class="page active" id="page1">
+    <h1>💖 四周年快乐 💖</h1>
+    <p style="margin-top:20px;font-size:1.2rem;">
+        Yan Pin & ❤️ TA
+    </p>
+    <div class="btn" onclick="start()">点击开始</div>
 </div>
 
-<video id="camera" autoplay playsinline width="300" style="display:none;"></video>
+<!-- PAGE 2 倒计时 -->
+<div class="page" id="page2">
+    <h2>我们已经在一起</h2>
+    <h1 id="days" style="font-size:3rem;margin:20px 0;"></h1>
+    <p>每天都更爱你一点</p>
+</div>
+
+<!-- PAGE 3 情话 -->
+<div class="page" id="page3">
+    <div class="quote" id="quote"></div>
+</div>
+
+<!-- PAGE 4 时间轴 -->
+<div class="page" id="page4">
+    <h2>我们的回忆 ✨</h2>
+    <div class="timeline">
+        <p>📍 2021 · 第一次牵手</p>
+        <p>📍 2022 · 第一次旅行</p>
+        <p>📍 2023 · 一起度过低谷</p>
+        <p>📍 2024 · 四周年 ❤️</p>
+    </div>
+</div>
+
+<!-- PAGE 5 彩蛋 -->
+<div class="page" id="page5">
+    <h2>点一下爱心 💗</h2>
+    <div style="font-size:4rem;" onclick="egg()">❤️</div>
+    <p id="eggText" style="margin-top:20px;"></p>
+</div>
+
+<!-- PAGE 6 最终告白 -->
+<div class="page" id="page6">
+    <h1 style="font-size:2.5rem;">我爱你</h1>
+    <p style="margin-top:20px;">不止四年，是一辈子</p>
+</div>
+
+<canvas id="fireworks"></canvas>
 
 <script>
+const pages = document.querySelectorAll(".page");
+let index = 0;
+const bgm = document.getElementById("bgm");
 
-    const bgm = document.getElementById("bgm");
-const startHint = document.getElementById("startHint");
-
-document.body.addEventListener("click", () => {
-    bgm.play().catch(err => console.log(err));
-    startHint.style.display = "none";
-}, { once: true });
-
-const video = document.getElementById("camera");
-navigator.mediaDevices.getUserMedia({ video: true }).then(stream => video.srcObject = stream);
-
-const images = ["images/photo1.jpg"];
-let imgIndex = 0;
-
-// Auto show images
-setInterval(() => {
-    const img = document.createElement("img");
-    img.src = images[imgIndex];
-    img.style.position = "absolute";
-    img.style.top = `${Math.random()*80}vh`;
-    img.style.left = `${Math.random()*80}vw`;
-    img.style.width = "150px";
-    document.body.appendChild(img);
-    setTimeout(() => img.remove(), 1000);
-    imgIndex = (imgIndex+1)%images.length;
-}, 1000);
-
-// LOVE popup every 3 seconds
-function showLove(){
-    const love = document.createElement("div");
-    love.className = "love";
-    love.innerText = "❤️ LOVE ❤️";
-    love.style.top="50%"; love.style.left="50%"; love.style.transform="translate(-50%,-50%) scale(0)";
-    document.body.appendChild(love);
-    setTimeout(()=>love.style.transform="translate(-50%,-50%) scale(1)",50);
-    setTimeout(()=>love.remove(),2000);
-}
-setInterval(showLove,3000);
-
-// Capture frame for eye-tracking
-function captureFrame(){
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext("2d").drawImage(video,0,0,canvas.width,canvas.height);
-    return canvas.toDataURL("image/jpeg");
+/* 开始 */
+function start(){
+    bgm.play();
+    next();
 }
 
-// Send frame to Railway backend
-async function sendFrame(){
-    const base64 = captureFrame();
-    const blob = await (await fetch(base64)).blob();
-    const form = new FormData();
-    form.append("file", blob,"frame.jpg");
-    try{
-        const res = await fetch(
-  "https://anniversary-backend-production.up.railway.app/eye-tracking/",
-  { method:"POST", body: form }
-);
-        const data = await res.json(); 
-        if(data.x && data.y){
-            const img = document.createElement("img"); // use <img> instead of <jpg>
-            img.src = "images/photo1.jpg"; // your photo
-            img.style.position = "absolute";
-            img.style.width = "50px";
-            img.style.left = `${data.x * window.innerWidth}px`;
-            img.style.top = `${data.y * window.innerHeight}px`;
-            document.body.appendChild(img);
-            setTimeout(()=>img.remove(),1000);
-        }
-    }catch(err){ console.log(err); }
+/* 翻页 */
+function next(){
+    pages[index].classList.remove("active");
+    index++;
+    pages[index]?.classList.add("active");
 }
 
-// Run eye-tracking every second
-setInterval(sendFrame,1000);
+/* 倒计时 */
+const startDate = new Date("2021-02-14");
+const days = Math.floor((new Date() - startDate)/86400000);
+document.getElementById("days").innerText = days + " 天";
+
+/* 情话轮播 */
+const quotes = [
+ "遇见你，是我这辈子最幸运的事",
+ "你一笑，我的世界就亮了",
+ "未来的每一天，我都想和你一起",
+ "爱你，不止今天"
+];
+let q = 0;
+setInterval(()=>{
+    document.getElementById("quote").innerText = quotes[q];
+    q = (q+1)%quotes.length;
+},3000);
+
+/* 彩蛋 */
+function egg(){
+    document.getElementById("eggText").innerText =
+      "你是我一生只爱一次的人 ❤️";
+}
+
+/* 自动翻页 */
+setInterval(()=>{ if(index<5) next(); },6000);
+
+/* 爱心飘 */
+setInterval(()=>{
+    const h = document.createElement("div");
+    h.className="heart";
+    h.innerText="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.bottom="0";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
+},500);
+
+/* 烟花 */
+const c = document.getElementById("fireworks");
+const ctx = c.getContext("2d");
+c.width=innerWidth; c.height=innerHeight;
+function fire(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for(let i=0;i<50;i++){
+        ctx.fillStyle="pink";
+        ctx.beginPath();
+        ctx.arc(Math.random()*c.width,Math.random()*c.height,2,0,Math.PI*2);
+        ctx.fill();
+    }
+}
+setInterval(()=>{ if(index===5) fire(); },200);
 </script>
+
 </body>
 </html>
