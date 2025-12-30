@@ -2,208 +2,215 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>我们的四周年 ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>我们的纪念日 ❤️</title>
 
-<style> 
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-    font-family: "PingFang SC","Microsoft YaHei",sans-serif;
-    height:100vh;
-    background: linear-gradient(180deg,#0f2027,#203a43,#2c5364);
-    color:white;
-    overflow:hidden;
-}
+<!-- 浪漫中文字体 -->
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 
-/* 页面容器 */
-.page {
-    position:absolute;
-    width:100%;
+<style>
+html,body{
+    margin:0;
+    padding:0;
     height:100%;
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:20px;
-}
-.page.active { display:flex; }
-
-/* 爱心动画 */
-.heart {
-    position:absolute;
-    color:pink;
-    font-size:20px;
-    animation: floatUp 3s linear forwards;
-}
-@keyframes floatUp {
-    from { transform:translateY(0); opacity:1; }
-    to { transform:translateY(-200px); opacity:0; }
+    background:linear-gradient(180deg,#1a001f,#000);
+    overflow:hidden;
+    color:white;
+    font-family:'ZCOOL XiaoWei',serif;
 }
 
-/* 按钮 */
-.btn {
-    margin-top:30px;
-    padding:12px 30px;
-    border-radius:30px;
-    background:pink;
-    color:#222;
-    font-size:1.1rem;
+/* 手机锁屏比例 */
+#app{
+    width:100vw;
+    height:100vh;
+    position:relative;
 }
 
-/* 情话 */
-.quote {
-    font-size:1.4rem;
-    line-height:2.2rem;
-    animation: fade 2s;
-}
-
-/* 时间轴 */
-.timeline {
-    width:100%;
-    text-align:left;
-}
-.timeline p {
-    margin:15px 0;
-    padding-left:10px;
-    border-left:3px solid pink;
-}
-
-/* 烟花 */
-canvas {
+/* 背景渐变动画 */
+body::before{
+    content:"";
     position:fixed;
-    top:0;
-    left:0;
-    pointer-events:none;
+    inset:0;
+    background:radial-gradient(circle at top,#ff5fa2,#000);
+    opacity:.25;
+    animation:bgmove 10s infinite alternate;
+}
+@keyframes bgmove{
+    from{transform:scale(1)}
+    to{transform:scale(1.2)}
+}
+
+/* 点击开始 */
+#startHint{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.6rem;
+    font-family:'Ma Shan Zheng',cursive;
+    animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:.5}
+}
+
+/* 名字 */
+#names{
+    text-align:center;
+    margin-top:40px;
+    font-size:2rem;
+    font-family:'Ma Shan Zheng',cursive;
+}
+
+/* 倒计时 */
+#days{
+    text-align:center;
+    margin-top:10px;
+    font-size:1.2rem;
+    opacity:.9;
+}
+
+/* 情话轮播 */
+#quote{
+    position:absolute;
+    bottom:22%;
+    width:100%;
+    text-align:center;
+    font-size:1.4rem;
+    padding:0 20px;
+    animation:fade 3s infinite;
+}
+@keyframes fade{
+    0%,100%{opacity:0}
+    20%,80%{opacity:1}
+}
+
+/* 漂浮爱心 */
+.heart{
+    position:absolute;
+    color:#ff6fae;
+    animation:float 6s linear forwards;
+}
+@keyframes float{
+    from{transform:translateY(100vh) scale(1);opacity:1}
+    to{transform:translateY(-10vh) scale(.5);opacity:0}
+}
+
+/* 点击彩蛋 */
+#egg{
+    position:absolute;
+    bottom:12%;
+    width:100%;
+    text-align:center;
+    font-size:2rem;
+    cursor:pointer;
+    animation:heartbeat 1.2s infinite;
+}
+@keyframes heartbeat{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.15)}
+}
+
+/* 结尾页 */
+#final{
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    font-size:2.5rem;
+    font-family:'Ma Shan Zheng',cursive;
 }
 </style>
 </head>
 
 <body>
+<div id="app">
 
-<!-- 🎵 背景音乐 -->
 <audio id="bgm" loop>
     <source src="./music/love.mp3" type="audio/mpeg">
 </audio>
 
-<!-- PAGE 1 封面 -->
-<div class="page active" id="page1">
-    <h1>💖 四周年快乐 💖</h1>
-    <p style="margin-top:20px;font-size:1.2rem;">
-        Yan Pin & ❤️ TA
-    </p>
-    <div class="btn" onclick="start()">点击开始</div>
+<div id="startHint">💖 轻触开始我们的故事 💖</div>
+
+<div id="names">Yan ❤️ Pin</div>
+<div id="days"></div>
+
+<div id="quote"></div>
+
+<div id="egg">❤️</div>
+
+<div id="final">
+    <div>我爱你</div>
+    <div style="font-size:1.2rem;margin-top:10px;">直到时间的尽头</div>
 </div>
 
-<!-- PAGE 2 倒计时 -->
-<div class="page" id="page2">
-    <h2>我们已经在一起</h2>
-    <h1 id="days" style="font-size:3rem;margin:20px 0;"></h1>
-    <p>每天都更爱你一点</p>
 </div>
-
-<!-- PAGE 3 情话 -->
-<div class="page" id="page3">
-    <div class="quote" id="quote"></div>
-</div>
-
-<!-- PAGE 4 时间轴 -->
-<div class="page" id="page4">
-    <h2>我们的回忆 ✨</h2>
-    <div class="timeline">
-        <p>📍 2021 · 第一次牵手</p>
-        <p>📍 2022 · 第一次旅行</p>
-        <p>📍 2023 · 一起度过低谷</p>
-        <p>📍 2024 · 四周年 ❤️</p>
-    </div>
-</div>
-
-<!-- PAGE 5 彩蛋 -->
-<div class="page" id="page5">
-    <h2>点一下爱心 💗</h2>
-    <div style="font-size:4rem;" onclick="egg()">❤️</div>
-    <p id="eggText" style="margin-top:20px;"></p>
-</div>
-
-<!-- PAGE 6 最终告白 -->
-<div class="page" id="page6">
-    <h1 style="font-size:2.5rem;">我爱你</h1>
-    <p style="margin-top:20px;">不止四年，是一辈子</p>
-</div>
-
-<canvas id="fireworks"></canvas>
 
 <script>
-const pages = document.querySelectorAll(".page");
-let index = 0;
-const bgm = document.getElementById("bgm");
-
-/* 开始 */
-function start(){
+// ===== 点击开始 =====
+const bgm=document.getElementById("bgm");
+document.body.addEventListener("click",()=>{
     bgm.play();
-    next();
+    startHint.style.display="none";
+},{once:true});
+
+// ===== 在一起天数 =====
+const startDate=new Date("2021-08-01"); // 改成你们的日期
+function updateDays(){
+    const now=new Date();
+    const days=Math.floor((now-startDate)/86400000);
+    document.getElementById("days").innerText=`我们在一起 ${days} 天`;
 }
+updateDays();
 
-/* 翻页 */
-function next(){
-    pages[index].classList.remove("active");
-    index++;
-    pages[index]?.classList.add("active");
-}
-
-/* 倒计时 */
-const startDate = new Date("2021-02-14");
-const days = Math.floor((new Date() - startDate)/86400000);
-document.getElementById("days").innerText = days + " 天";
-
-/* 情话轮播 */
-const quotes = [
- "遇见你，是我这辈子最幸运的事",
- "你一笑，我的世界就亮了",
- "未来的每一天，我都想和你一起",
- "爱你，不止今天"
+// ===== 情话轮播 =====
+const quotes=[
+"遇见你，是我一生的幸运",
+"你是我所有温柔的来源",
+"这一生，只想牵着你的手",
+"爱不是选择，是你"
 ];
-let q = 0;
+let qi=0;
 setInterval(()=>{
-    document.getElementById("quote").innerText = quotes[q];
-    q = (q+1)%quotes.length;
+    quote.innerText=quotes[qi];
+    qi=(qi+1)%quotes.length;
 },3000);
 
-/* 彩蛋 */
-function egg(){
-    document.getElementById("eggText").innerText =
-      "你是我一生只爱一次的人 ❤️";
-}
-
-/* 自动翻页 */
-setInterval(()=>{ if(index<5) next(); },6000);
-
-/* 爱心飘 */
+// ===== 漂浮爱心 =====
 setInterval(()=>{
-    const h = document.createElement("div");
+    const h=document.createElement("div");
     h.className="heart";
     h.innerText="❤️";
     h.style.left=Math.random()*100+"vw";
-    h.style.bottom="0";
+    h.style.fontSize=20+Math.random()*20+"px";
     document.body.appendChild(h);
-    setTimeout(()=>h.remove(),3000);
+    setTimeout(()=>h.remove(),6000);
 },500);
 
-/* 烟花 */
-const c = document.getElementById("fireworks");
-const ctx = c.getContext("2d");
-c.width=innerWidth; c.height=innerHeight;
-function fire(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(let i=0;i<50;i++){
-        ctx.fillStyle="pink";
-        ctx.beginPath();
-        ctx.arc(Math.random()*c.width,Math.random()*c.height,2,0,Math.PI*2);
-        ctx.fill();
-    }
-}
-setInterval(()=>{ if(index===5) fire(); },200);
-</script>
+// ===== 彩蛋 & 结尾 =====
+document.getElementById("egg").onclick=()=>{
+    document.getElementById("final").style.display="flex";
+    launchFireworks();
+};
 
+// ===== 简易烟花 =====
+function launchFireworks(){
+    setInterval(()=>{
+        const f=document.createElement("div");
+        f.innerText="✨";
+        f.style.position="fixed";
+        f.style.left=Math.random()*100+"vw";
+        f.style.top=Math.random()*100+"vh";
+        f.style.fontSize="2rem";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
+    },200);
+}
+</script>
 </body>
 </html>
