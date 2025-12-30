@@ -64,7 +64,7 @@ async function sendFrame(){
     const form = new FormData();
     form.append("file", blob,"frame.jpg");
     try{
-        const res = await fetch("https://your-app.up.railway.app/eye-tracking/", {method:"POST",body:form});
+        const res = await fetch("https://anniversary-backend-production.up.railway.app/eye-tracking", {method:"POST",body:form});
         const data = await res.json(); 
         if(data.x && data.y){
             const img = document.createElement("img"); // use <img> instead of <jpg>
