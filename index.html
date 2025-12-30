@@ -10,8 +10,8 @@
 </head>
 <body>
 
-<audio id="bgm" loop>
-  <source src="/music/love.mp3" type="audio/mp3">
+<audio id="bgm" autoplay loop>
+  <source src="./music/love.mp3" type="audio/mpeg">
 </audio>
 
 <div id="startHint"
@@ -79,7 +79,10 @@ async function sendFrame(){
     const form = new FormData();
     form.append("file", blob,"frame.jpg");
     try{
-        const res = await fetch("https://anniversary-backend-production.up.railway.app/eye-tracking", {method:"POST",body:form});
+        const res = await fetch(
+  "https://anniversary-backend-production.up.railway.app/eye-tracking/",
+  { method:"POST", body: form }
+);
         const data = await res.json(); 
         if(data.x && data.y){
             const img = document.createElement("img"); // use <img> instead of <jpg>
