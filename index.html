@@ -10,13 +10,28 @@
 </head>
 <body>
 
-<audio autoplay loop>
+<audio id="bgm" loop>
   <source src="love.mp3" type="audio/mp3">
 </audio>
+
+<div id="startHint"
+     style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+     font-size:1.5rem;color:white;cursor:pointer;">
+  💖 Tap / Click to Start 💖
+</div>
 
 <video id="camera" autoplay playsinline width="300" style="display:none;"></video>
 
 <script>
+
+    const bgm = document.getElementById("bgm");
+const startHint = document.getElementById("startHint");
+
+document.body.addEventListener("click", () => {
+    bgm.play().catch(err => console.log(err));
+    startHint.style.display = "none";
+}, { once: true });
+
 const video = document.getElementById("camera");
 navigator.mediaDevices.getUserMedia({ video: true }).then(stream => video.srcObject = stream);
 
